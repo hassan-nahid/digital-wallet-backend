@@ -144,11 +144,39 @@ const sendMoney = (data) => __awaiter(void 0, void 0, void 0, function* () {
                 status: transaction_interface_1.TransactionStatus.APPROVED,
                 description: description || "Money received",
             }], { session });
+        // Add fee to admin account if fee is charged
+        let feeTransaction = null;
+        if (fee > 0) {
+            const adminUser = yield user_model_1.User.findOne({ role: user_interface_1.Role.ADMIN }).session(session);
+            if (!adminUser) {
+                throw new AppError_1.default(http_status_codes_1.default.NOT_FOUND, "Admin user not found");
+            }
+            const adminWallet = yield wallet_model_1.Wallet.findOne({ userId: adminUser._id }).session(session);
+            if (!adminWallet) {
+                throw new AppError_1.default(http_status_codes_1.default.NOT_FOUND, "Admin wallet not found");
+            }
+            adminWallet.adminProfit += fee;
+            adminWallet.balance += fee;
+            yield adminWallet.save({ session });
+            const feeTransactionResult = yield transaction_model_1.Transaction.create([{
+                    sender: senderId,
+                    receiver: adminUser._id,
+                    walletId: adminWallet._id,
+                    transactionId: `tr_id_${(0, uuid_1.v4)()}`,
+                    transactionType: transaction_interface_1.TransactionType.ADMIN_PROFIT,
+                    amount: fee,
+                    fee: 0,
+                    status: transaction_interface_1.TransactionStatus.APPROVED,
+                    description: "Admin fee from send money transaction",
+                }], { session });
+            feeTransaction = feeTransactionResult[0];
+        }
         yield session.commitTransaction();
         session.endSession();
         return {
             senderTransaction: senderTransaction[0],
-            receiverTransaction: receiverTransaction[0]
+            receiverTransaction: receiverTransaction[0],
+            feeTransaction: feeTransaction
         };
     }
     catch (error) {

@@ -186,12 +186,45 @@ const sendMoney = async (data: {
             description: description || "Money received",
         }], { session });
 
+        // Add fee to admin account if fee is charged
+        let feeTransaction = null;
+        if (fee > 0) {
+            const adminUser = await User.findOne({ role: Role.ADMIN }).session(session);
+            if (!adminUser) {
+                throw new AppError(httpStatus.NOT_FOUND, "Admin user not found");
+            }
+
+            const adminWallet = await Wallet.findOne({ userId: adminUser._id }).session(session);
+            if (!adminWallet) {
+                throw new AppError(httpStatus.NOT_FOUND, "Admin wallet not found");
+            }
+
+            adminWallet.adminProfit += fee;
+            adminWallet.balance += fee;
+            await adminWallet.save({ session });
+
+            const feeTransactionResult = await Transaction.create([{
+                sender: senderId,
+                receiver: adminUser._id,
+                walletId: adminWallet._id,
+                transactionId: `tr_id_${uuidv4()}`,
+                transactionType: TransactionType.ADMIN_PROFIT,
+                amount: fee,
+                fee: 0,
+                status: TransactionStatus.APPROVED,
+                description: "Admin fee from send money transaction",
+            }], { session });
+
+            feeTransaction = feeTransactionResult[0];
+        }
+
         await session.commitTransaction();
         session.endSession();
 
         return {
             senderTransaction: senderTransaction[0],
-            receiverTransaction: receiverTransaction[0]
+            receiverTransaction: receiverTransaction[0],
+            feeTransaction: feeTransaction
         };
     } catch (error) {
         await session.abortTransaction();
