@@ -24,7 +24,7 @@ app.use((0, express_session_1.default)({
 app.use("/api/v1", routes_1.router);
 app.get("/", (req, res) => {
     res.status(200).json({
-        message: "Welcome to the tour management system"
+        message: "Welcome to the Digital Wallet system"
     });
 });
 app.use(globalErrorHandler_1.globalErrorHandler);
