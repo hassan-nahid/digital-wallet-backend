@@ -6,7 +6,7 @@ import bcryptjs from "bcryptjs";
 import { envVars } from "../../config/env";
 import { JwtPayload } from "jsonwebtoken";
 
-// Create User (already done)
+// Create User
 const createUser = async (payload: Partial<IUser>) => {
     const { email, password, ...rest } = payload;
     const isUserExist = await User.findOne({ email });
@@ -23,12 +23,11 @@ const createUser = async (payload: Partial<IUser>) => {
         ...rest,
     });
 
-    // Return user without password using select
     const userWithoutPassword = await User.findById(user._id).select('-password');
     return userWithoutPassword;
 };
 
-// Get All Users (admin only) with sorting, filtering, and searching
+// Get All Users 
 const getAllUsers = async (query: any) => {
     const {
         search,

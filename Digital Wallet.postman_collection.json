@@ -1,0 +1,779 @@
+{
+	"info": {
+		"_postman_id": "dd5e4ac8-3334-4ac3-a3b3-bdf68e84117c",
+		"name": "Digital Wallet",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "37575620"
+	},
+	"item": [
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "user register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "// {\r\n//   \"name\": \"agent1\",\r\n//   \"email\": \"agent1@gmail.com\",\r\n//   \"phone\": \"+8801992843929\",\r\n//   \"photo\": \"https://i.ibb.co/album/sample-photo.jpg\",\r\n//   \"password\": \"StrongP@ss1\",\r\n//   \"address\": \"Sirajganj, Bangladesh\",\r\n//   \"nid\": 123426709011\r\n// }\r\n{\r\n  \"name\": \"Hassan Nahid\",\r\n  \"email\": \"hassan.nahid.dev@gmail.com\",\r\n  \"phone\": \"+8801780365440\",\r\n  \"photo\": \"https://i.ibb.co/album/sample-photo.jpg\",\r\n  \"password\": \"StrongP@ss1\",\r\n  \"address\": \"Sirajganj, Bangladesh\",\r\n  \"nid\": 123420700013\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/v1/user/register",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"v1",
+								"user",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "user get all user",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODg5ZmYxNzQ4ZjljOGQwN2MyNGY3YTQiLCJlbWFpbCI6Imhhc3Nhbi5uYWhpZC5kZXZAZ21haWwuY29tIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzUzODkxMDYyLCJleHAiOjE3NTM5Nzc0NjJ9.PCYudpwyMA_ixjaOIyi7zgU_H_VuqtHfPnV4RSyfVpQ",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:5000 /api/v1/user/all-users?search=agent",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000 ",
+							"path": [
+								"api",
+								"v1",
+								"user",
+								"all-users"
+							],
+							"query": [
+								{
+									"key": "search",
+									"value": "agent"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "user get single user",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODg5ZmYxNzQ4ZjljOGQwN2MyNGY3YTQiLCJlbWFpbCI6Imhhc3Nhbi5uYWhpZC5kZXZAZ21haWwuY29tIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzUzODkxMDYyLCJleHAiOjE3NTM5Nzc0NjJ9.PCYudpwyMA_ixjaOIyi7zgU_H_VuqtHfPnV4RSyfVpQ",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:5000/api/v1/user/6889fe0548f9c8d07c24f793",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"v1",
+								"user",
+								"6889fe0548f9c8d07c24f793"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "user get me",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODg4YTM1NzJmMTA2Zjc5ODAwYzRjYzAiLCJlbWFpbCI6Imhhc3Nhbi5uYWhpZC5kZXZAZ21haWwuY29tIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzUzNzk1ODUzLCJleHAiOjE3NTM4ODIyNTN9.Z1e5ji1W8CzX4gu9BhdgUvdwmerWIHVZN6tyIav5Mxs",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:5000/api/v1/user/me",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"v1",
+								"user",
+								"me"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "user update",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODg4YTM1NzJmMTA2Zjc5ODAwYzRjYzAiLCJlbWFpbCI6Imhhc3Nhbi5uYWhpZC5kZXZAZ21haWwuY29tIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzUzNzk2NzY3LCJleHAiOjE3NTM4ODMxNjd9.LluomZK8XR7m8wa0MihFqxN5PVmjazWFkmyyygKiYcc",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/v1/user/6889e3f162ce427f9390c978",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"v1",
+								"user",
+								"6889e3f162ce427f9390c978"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "user Make agent",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODg4YTM1NzJmMTA2Zjc5ODAwYzRjYzAiLCJlbWFpbCI6Imhhc3Nhbi5uYWhpZC5kZXZAZ21haWwuY29tIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzUzNzk2NzY3LCJleHAiOjE3NTM4ODMxNjd9.LluomZK8XR7m8wa0MihFqxN5PVmjazWFkmyyygKiYcc",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:5000/api/v1/user/make-agent/6889fdbc48f9c8d07c24f785",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"v1",
+								"user",
+								"make-agent",
+								"6889fdbc48f9c8d07c24f785"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "user Make agent suspense",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODg4ZThkNGFiZjMwYmY0NDE0MWVkMmYiLCJlbWFpbCI6Imhhc3Nhbi5uYWhpZC5kZXZAZ21haWwuY29tIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzUzODA4MDI5LCJleHAiOjE3NTM4OTQ0Mjl9.lJDdk5gL6_i6aQLJQOAAeXMGGnHphKYhHmB5v-W_4-M",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:5000/api/v1/user/agent-suspense/6888e784758b6525fa392525",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"v1",
+								"user",
+								"agent-suspense",
+								"6888e784758b6525fa392525"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "auth",
+			"item": [
+				{
+					"name": "auth login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "// {\r\n//   \"email\": \"agent1@gmail.com\",\r\n//   \"password\": \"StrongP@ss1\"\r\n// }\r\n// --------------------- ADMIN EMAIL AND PASSWORD ---------------------------\r\n// {\r\n//   \"email\": \"hassan.nahid.dev@gmail.com\",\r\n//   \"password\": \"StrongP@ss1\"\r\n// }\r\n\r\n{\r\n  \"email\": \"user1@gmail.com\",\r\n  \"password\": \"StrongP@ss1\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/v1/auth/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "auth refreshToken to get accesstoken",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODg4YTM1NzJmMTA2Zjc5ODAwYzRjYzAiLCJlbWFpbCI6Imhhc3Nhbi5uYWhpZC5kZXZAZ21haWwuY29tIiwicm9sZSI6IlVTRVIiLCJpYXQiOjE3NTM3OTIxMDYsImV4cCI6MTc1NjM4NDEwNn0.rY_-1V9IhjpgHREUk5DHQ9t5I-Gnh2qzFY5I-ExQPL8",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"email\": \"hassan.nahid.dev@gmail.com\",\r\n  \"password\": \"StrongP@ss1\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/v1/auth/refresh-token",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"refresh-token"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "auth logout",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"email\": \"hassan.nahid.dev@gmail.com\",\r\n  \"password\": \"StrongP@ss1\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/v1/auth/logout",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "change password",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODg4YTM1NzJmMTA2Zjc5ODAwYzRjYzAiLCJlbWFpbCI6Imhhc3Nhbi5uYWhpZC5kZXZAZ21haWwuY29tIiwicm9sZSI6IlVTRVIiLCJpYXQiOjE3NTM3OTIzOTAsImV4cCI6MTc1Mzg3ODc5MH0.lx0_dHSB_Cbt3WQm3pLbZIcRMJFrQQhcMLlL6qzIH78",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \r\n  \"oldPassword\": \"StrongP@ss2\",\r\n  \"newPassword\": \"StrongP@ss1\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/v1/auth/change-password",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"change-password"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "transaction",
+			"item": [
+				{
+					"name": "sendMoney",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODg5ZmUxODQ4ZjljOGQwN2MyNGY3OWEiLCJlbWFpbCI6InVzZXIxQGdtYWlsLmNvbSIsInJvbGUiOiJVU0VSIiwiaWF0IjoxNzUzOTA2NTI1LCJleHAiOjE3NTM5OTI5MjV9.Tb0kVcZhvEXQO8pEal0Gwt7iHnXFKBMB2SERFMiLTBw",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"receiver\":\"6889fe0548f9c8d07c24f793\",\r\n  \"amount\": 1000\r\n}\r\n\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/v1/transaction/send-money",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"v1",
+								"transaction",
+								"send-money"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get my transaction",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODg5ZmYxNzQ4ZjljOGQwN2MyNGY3YTQiLCJlbWFpbCI6Imhhc3Nhbi5uYWhpZC5kZXZAZ21haWwuY29tIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzUzODkxMDYyLCJleHAiOjE3NTM5Nzc0NjJ9.PCYudpwyMA_ixjaOIyi7zgU_H_VuqtHfPnV4RSyfVpQ",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/v1/transaction/my-transactions",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"v1",
+								"transaction",
+								"my-transactions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "all transaction",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODg5ZmYxNzQ4ZjljOGQwN2MyNGY3YTQiLCJlbWFpbCI6Imhhc3Nhbi5uYWhpZC5kZXZAZ21haWwuY29tIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzUzODkxMDYyLCJleHAiOjE3NTM5Nzc0NjJ9.PCYudpwyMA_ixjaOIyi7zgU_H_VuqtHfPnV4RSyfVpQ",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/v1/transaction/all-transactions?senderRole=USER&receiverRole=AGENT",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"v1",
+								"transaction",
+								"all-transactions"
+							],
+							"query": [
+								{
+									"key": "senderRole",
+									"value": "USER"
+								},
+								{
+									"key": "receiverRole",
+									"value": "AGENT"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "add money",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODg5ZmUxODQ4ZjljOGQwN2MyNGY3OWEiLCJlbWFpbCI6InVzZXIxQGdtYWlsLmNvbSIsInJvbGUiOiJVU0VSIiwiaWF0IjoxNzUzODg1MzA1LCJleHAiOjE3NTM5NzE3MDV9.evi9JkXlf_7wJ01DmcRWXdNEgMfaa1kHO9wPehswAiE",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"amount\": 1000\r\n}\r\n\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/v1/transaction/add-money",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"v1",
+								"transaction",
+								"add-money"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "admin-withdraw",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODg5ZmYxNzQ4ZjljOGQwN2MyNGY3YTQiLCJlbWFpbCI6Imhhc3Nhbi5uYWhpZC5kZXZAZ21haWwuY29tIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzUzODg3NDEzLCJleHAiOjE3NTM5NzM4MTN9.czYH9dbMMzbdxkX9_e-H5MmPL_VCsORv3puJJ1I4fuU",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"amount\": 1000\r\n}\r\n\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/v1/transaction/admin-withdraw",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"v1",
+								"transaction",
+								"admin-withdraw"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "cash in",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODg5ZmRjZTQ4ZjljOGQwN2MyNGY3OGMiLCJlbWFpbCI6ImFnZW50MUBnbWFpbC5jb20iLCJyb2xlIjoiQUdFTlQiLCJpYXQiOjE3NTM4NzQ3MzEsImV4cCI6MTc1Mzk2MTEzMX0.qQt3ohNAjLEBicZbXeezjGYh10Rj5HC-Vdw9ETL1yN0",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"receiver\": \"6889fe1848f9c8d07c24f79a\",\r\n  \"amount\": 10000\r\n}\r\n\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/v1/transaction/cash-in",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"v1",
+								"transaction",
+								"cash-in"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "cash out",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODg5ZmRjZTQ4ZjljOGQwN2MyNGY3OGMiLCJlbWFpbCI6ImFnZW50MUBnbWFpbC5jb20iLCJyb2xlIjoiQUdFTlQiLCJpYXQiOjE3NTM4NzgwOTAsImV4cCI6MTc1Mzk2NDQ5MH0.IvQv7vS0Rc1ru06h160Pf0cbKZlK_ht8jB0RuRBQJsY",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"receiver\": \"6889ff1748f9c8d07c24f7a4\",\r\n  \"amount\": 9000\r\n}\r\n\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/v1/transaction/cash-out",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"v1",
+								"transaction",
+								"cash-out"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "wallet",
+			"item": [
+				{
+					"name": "get my wallet",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODg5ZmUxODQ4ZjljOGQwN2MyNGY3OWEiLCJlbWFpbCI6InVzZXIxQGdtYWlsLmNvbSIsInJvbGUiOiJVU0VSIiwiaWF0IjoxNzUzODgyOTM5LCJleHAiOjE3NTM5NjkzMzl9.LnCjp_YhSMwZw49tqRNQIXRAquixIHelRpZaRx43EMY",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:5000/api/v1/wallet/me",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"v1",
+								"wallet",
+								"me"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get all wallet",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODg5ZmYxNzQ4ZjljOGQwN2MyNGY3YTQiLCJlbWFpbCI6Imhhc3Nhbi5uYWhpZC5kZXZAZ21haWwuY29tIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzUzODkxMDYyLCJleHAiOjE3NTM5Nzc0NjJ9.PCYudpwyMA_ixjaOIyi7zgU_H_VuqtHfPnV4RSyfVpQ",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:5000/api/v1/wallet?search=nahid",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"v1",
+								"wallet"
+							],
+							"query": [
+								{
+									"key": "search",
+									"value": "nahid"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "block wallet",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODg5ZmYxNzQ4ZjljOGQwN2MyNGY3YTQiLCJlbWFpbCI6Imhhc3Nhbi5uYWhpZC5kZXZAZ21haWwuY29tIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzUzODgzMzY1LCJleHAiOjE3NTM5Njk3NjV9.75j51lpM2UfuGIIleN3DevRfNgqgBtjJe05k2sNjJms",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:5000/api/v1/wallet/block-wallet/6889ff1748f9c8d07c24f7a4",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"v1",
+								"wallet",
+								"block-wallet",
+								"6889ff1748f9c8d07c24f7a4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "unblock wallet",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODg5ZmYxNzQ4ZjljOGQwN2MyNGY3YTQiLCJlbWFpbCI6Imhhc3Nhbi5uYWhpZC5kZXZAZ21haWwuY29tIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzUzODgzMzY1LCJleHAiOjE3NTM5Njk3NjV9.75j51lpM2UfuGIIleN3DevRfNgqgBtjJe05k2sNjJms",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:5000/api/v1/wallet/unblock-wallet/6889ff1748f9c8d07c24f7a4",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"v1",
+								"wallet",
+								"unblock-wallet",
+								"6889ff1748f9c8d07c24f7a4"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
