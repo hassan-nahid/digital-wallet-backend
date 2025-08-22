@@ -6,11 +6,15 @@ import { createUserSchema, updateUserSchema, getUsersQuerySchema } from "./user.
 import { Role } from "./user.interface";
 import { checkAuth } from "../../middleware/checkAuth";
 
+
 const router = Router();
+// Analytics route for admin
+router.get("/analytics", checkAuth(Role.ADMIN), UserController.getUserAnalytics);
 
 router.post("/register", validateRequest(createUserSchema), UserController.createUser)
 router.get("/all-users", checkAuth(Role.ADMIN), validateQuery(getUsersQuerySchema), UserController.getAllUsers)
 router.get("/me", checkAuth(...Object.values(Role)), UserController.getMe)
+router.get("/get-admin",checkAuth(Role.AGENT, Role.ADMIN), UserController.getAdmin);
 router.get("/:id", checkAuth(Role.ADMIN), UserController.getSingleUser)
 router.patch("/:id", validateRequest(updateUserSchema), checkAuth(...Object.values(Role)), UserController.updateUser)
 router.patch(

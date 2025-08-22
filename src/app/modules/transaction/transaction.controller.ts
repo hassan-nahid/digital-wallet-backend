@@ -119,7 +119,15 @@ const getAllTransactions = catchAsync(async (req: Request, res: Response, next: 
     }
   })
 })
-
+const getTransactionAnalytics = catchAsync(async (req: Request, res: Response) => {
+  const analytics = await TransactionServices.getTransactionAnalytics();
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: "Transaction analytics fetched successfully",
+    data: analytics
+  });
+});
 
 
 
@@ -131,5 +139,6 @@ export const TransactionControllers = {
   addMoney,
   adminWithdraw,
   getMyTransactions,
-  getAllTransactions
+  getAllTransactions,
+  getTransactionAnalytics
 }

@@ -8,6 +8,7 @@ import { TransactionControllers } from "./transaction.controller";
 
 const router = Router();
 
+router.get("/analytics", checkAuth(Role.ADMIN), TransactionControllers.getTransactionAnalytics);
 router.post("/add-money", checkAuth(Role.USER),validateRequest(addMoneyZodSchema), TransactionControllers.addMoney)
 router.post("/send-money", checkAuth(Role.USER),validateRequest(createTransactionZodSchema), TransactionControllers.sendMoney)
 router.post("/cash-in", checkAuth(Role.AGENT,Role.ADMIN),validateRequest(createTransactionZodSchema), TransactionControllers.cashIn)

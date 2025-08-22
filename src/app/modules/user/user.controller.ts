@@ -71,49 +71,72 @@ const updateUser = catchAsync(async (req: Request, res: Response, next: NextFunc
 })
 
 const makeUserAgent = catchAsync(async (req: Request, res: Response) => {
-  const { userId } = req.params;
+    const { userId } = req.params;
 
-  const result = (await UserServices.makeUserAgent(userId));
-  
+    const result = (await UserServices.makeUserAgent(userId));
 
-  sendResponse(res, {
-    statusCode: httpStatus.OK,
-    success: true,
-    message: "User has been made an Agent",
-    data: result,
-  });
+
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: "User has been made an Agent",
+        data: result,
+    });
 });
 
 
 const suspendAgent = catchAsync(async (req: Request, res: Response) => {
-  const { userId } = req.params;
-  const result = await UserServices.suspendAgent(userId);
+    const { userId } = req.params;
+    const result = await UserServices.suspendAgent(userId);
 
-  res.status(httpStatus.OK).json({
-    success: true,
-    message: "Agent approval has been suspended",
-    data: result,
-  });
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: "Agent approval has been suspended",
+        data: result,
+    });
 });
 const searchUserByEmail = catchAsync(async (req: Request, res: Response) => {
-  const { email } = req.params;
-  const result = await UserServices.searchUserByEmail(email);
+    const { email } = req.params;
+    const result = await UserServices.searchUserByEmail(email);
 
-  res.status(httpStatus.OK).json({
-    success: true,
-    message: "User founded",
-    data: result,
-  });
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: "User Founded",
+        data: result,
+    });
 });
 const searchAgentByEmail = catchAsync(async (req: Request, res: Response) => {
-  const { email } = req.params;
-  const result = await UserServices.searchAgentByEmail(email);
+    const { email } = req.params;
+    const result = await UserServices.searchAgentByEmail(email);
 
-  res.status(httpStatus.OK).json({
-    success: true,
-    message: "Agent founded",
-    data: result,
-  });
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: "Agent Founded",
+        data: result,
+    });
+});
+const getAdmin = catchAsync(async (req: Request, res: Response) => {
+    const result = await UserServices.getAdmin();
+
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: "Admin Founded",
+        data: result,
+    });
+});
+const getUserAnalytics = catchAsync(async (req: Request, res: Response) => {
+    const result = await UserServices.getUserAnalytics();
+
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: "Getting User Analytics Data",
+        data: result,
+    });
 });
 
 export const UserController = {
@@ -125,5 +148,7 @@ export const UserController = {
     makeUserAgent,
     suspendAgent,
     searchUserByEmail,
-    searchAgentByEmail
+    searchAgentByEmail,
+    getAdmin,
+    getUserAnalytics
 }

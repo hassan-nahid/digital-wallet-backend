@@ -53,11 +53,22 @@ const unblockWallet = catchAsync(async (req: Request, res: Response, next: NextF
     });
 })
 
+const getWalletAnalytics = catchAsync(async (req: Request, res: Response) => {
+    const analytics = await WalletServices.getWalletAnalytics();
+    sendResponse(res, {
+        success: true,
+        statusCode: httpStatus.OK,
+        message: "Wallet analytics fetched successfully",
+        data: analytics
+    });
+});
+
 
 
 export const WalletControllers = {
     getMyWallet,
     blockWallet,
     unblockWallet,
-    getAllWallets
+    getAllWallets,
+    getWalletAnalytics
 }

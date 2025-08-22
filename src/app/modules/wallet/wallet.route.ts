@@ -13,6 +13,7 @@ router.get("/",
     validateQuery(getWalletsQuerySchema), 
     WalletControllers.getAllWallets
 ); 
+router.get("/analytics", checkAuth(Role.ADMIN), WalletControllers.getWalletAnalytics);
 router.patch("/block-wallet/:id", checkAuth(Role.ADMIN), WalletControllers.blockWallet);
 router.patch("/unblock-wallet/:id", checkAuth(Role.ADMIN), WalletControllers.unblockWallet);
 

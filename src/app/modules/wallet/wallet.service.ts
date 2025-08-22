@@ -212,6 +212,16 @@ const unblockWallet = async (userId: string) => {
 
   return wallet;
 };
+const getWalletAnalytics = async () => {
+    const totalWallets = await Wallet.countDocuments();
+    const totalBlocked = await Wallet.countDocuments({ isBlocked: true });
+    const totalUnblocked = await Wallet.countDocuments({ isBlocked: false });
+    return {
+        totalWallets,
+        totalBlocked,
+        totalUnblocked
+    };
+};
 
 
 
@@ -219,5 +229,6 @@ export const WalletServices = {
     getMyWallet,
     blockWallet,
     unblockWallet,
-    getAllWallets
+    getAllWallets,
+    getWalletAnalytics
 }

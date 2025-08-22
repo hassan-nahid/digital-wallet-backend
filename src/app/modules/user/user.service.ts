@@ -154,7 +154,7 @@ const makeUserAgent = async (userId: string) => {
     if (user.isActive === IsActive.BLOCKED || user.isActive === IsActive.INACTIVE) {
         throw new AppError(httpStatus.FORBIDDEN, `User is ${user.isActive.toLowerCase()}`);
     }
-    if(!user.phone) {
+    if (!user.phone) {
         throw new AppError(httpStatus.BAD_REQUEST, "User must have a phone number to become an agent");
     }
 
@@ -174,7 +174,7 @@ const makeUserAgent = async (userId: string) => {
     }
 
     user.role = Role.AGENT;
-    user.isAgentApproved = true; 
+    user.isAgentApproved = true;
 
     await user.save();
 
@@ -183,21 +183,21 @@ const makeUserAgent = async (userId: string) => {
 };
 
 const suspendAgent = async (userId: string) => {
-  const user = await User.findById(userId);
+    const user = await User.findById(userId);
 
-  if (!user) {
-    throw new AppError(httpStatus.NOT_FOUND, "User not found");
-  }
+    if (!user) {
+        throw new AppError(httpStatus.NOT_FOUND, "User not found");
+    }
 
-  if (user.role !== Role.AGENT) {
-    throw new AppError(httpStatus.BAD_REQUEST, "User is not an agent");
-  }
+    if (user.role !== Role.AGENT) {
+        throw new AppError(httpStatus.BAD_REQUEST, "User is not an agent");
+    }
 
-  user.isAgentApproved = false;
-  await user.save();
+    user.isAgentApproved = false;
+    await user.save();
 
-  const { password: _, ...userWithoutPassword } = user.toObject();
-  return userWithoutPassword;
+    const { password: _, ...userWithoutPassword } = user.toObject();
+    return userWithoutPassword;
 };
 const searchUserByEmail = async (email: any) => {
     if (!email || typeof email !== 'string') {
@@ -205,11 +205,11 @@ const searchUserByEmail = async (email: any) => {
     }
     const user = await User.findOne({ email, role: Role.USER }).select('-password -isAgentApproved -nid -isActive -createdAt -updatedAt');
     if (!user) {
-    throw new AppError(httpStatus.BAD_REQUEST, "User not found or not a regular user");
-  }
+        throw new AppError(httpStatus.BAD_REQUEST, "User not found or not a regular user");
+    }
 
-  return user;
-    
+    return user;
+
 };
 const searchAgentByEmail = async (email: any) => {
     if (!email || typeof email !== 'string') {
@@ -217,11 +217,34 @@ const searchAgentByEmail = async (email: any) => {
     }
     const user = await User.findOne({ email, role: Role.AGENT }).select('-password -isAgentApproved -nid -isActive -createdAt -updatedAt');
     if (!user) {
-    throw new AppError(httpStatus.BAD_REQUEST, "User not found or not a regular user");
-  }
+        throw new AppError(httpStatus.BAD_REQUEST, "User not found or not a regular user");
+    }
 
-  return user;
-    
+    return user;
+
+};
+const getAdmin = async () => {
+
+    const user = await User.find({ role: Role.ADMIN }).select('-password -isAgentApproved -nid -isActive -createdAt -updatedAt -email');
+    if (!user || user.length === 0) {
+        throw new AppError(httpStatus.BAD_REQUEST, "Admin Not Found");
+    }
+
+    return user;
+
+};
+
+const getUserAnalytics = async () => {
+    const total = await User.countDocuments();
+    const admin = await User.countDocuments({ role: Role.ADMIN });
+    const agent = await User.countDocuments({ role: Role.AGENT });
+    const user = await User.countDocuments({ role: Role.USER });
+    return {
+        totalUsers: total,
+        totalAdmin: admin,
+        totalAgent: agent,
+        totalUser: user
+    };
 };
 
 
@@ -234,5 +257,7 @@ export const UserServices = {
     makeUserAgent,
     suspendAgent,
     searchUserByEmail,
-    searchAgentByEmail
+    searchAgentByEmail,
+    getAdmin,
+    getUserAnalytics
 };

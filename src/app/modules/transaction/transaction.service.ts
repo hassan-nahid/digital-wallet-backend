@@ -872,6 +872,18 @@ const getAllTransactions = async (queryParams: TransactionQueryParams = {}) => {
     };
 };
 
+const getTransactionAnalytics = async () => {
+    const totalTransactions = await Transaction.countDocuments();
+    const result = await Transaction.aggregate([
+        { $group: { _id: null, totalVolume: { $sum: "$amount" } } }
+    ]);
+    const totalVolume = result[0]?.totalVolume || 0;
+    return {
+        totalTransactions,
+        totalVolume
+    };
+};
+
 
 export const TransactionServices = {
     sendMoney,
@@ -880,5 +892,6 @@ export const TransactionServices = {
     addMoney,
     adminWithdraw,
     getMyTransactions,
-    getAllTransactions
+    getAllTransactions,
+    getTransactionAnalytics
 }
