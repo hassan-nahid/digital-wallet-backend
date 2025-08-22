@@ -30,6 +30,8 @@ export const createUserSchema = z.object({
             message: "Password must contain at least 1 number.",
         }),
     address: z.string().min(10).max(200),
+    role: z
+        .enum(Object.values(Role) as [string]),
     nid: z.number().min(1000000000).max(999999999999),
 });
 

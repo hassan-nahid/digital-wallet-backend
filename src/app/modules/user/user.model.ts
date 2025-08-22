@@ -18,6 +18,14 @@ const userSchema = new Schema<IUser>({
     versionKey: false
 });
 
+
+userSchema.pre("save", function (next) {
+    if (this.role === Role.AGENT) {
+        this.isAgentApproved = true;
+    }
+    next();
+});
+
 userSchema.post("save", async function (doc, next) {
     try {
         const existingWallet = await Wallet.findOne({ userId: doc._id });
