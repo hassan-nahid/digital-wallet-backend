@@ -88,13 +88,19 @@ const adminWithdraw = catchAsync(async (req: Request, res: Response, next: NextF
 })
 const getMyTransactions = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
   const user = req.user as JwtPayload;
-
-  const sendMoneyData = await TransactionServices.getMyTransactions(user.userId);
+  const queryParams = req.query as any;
+  const result = await TransactionServices.getMyTransactions(user.userId, queryParams);
   sendResponse(res, {
     success: true,
     statusCode: httpStatus.OK,
     message: "Transactions Retrieved Successfully",
-    data: sendMoneyData
+    data: result.transactions,
+    meta: {
+      page: result.pagination.currentPage,
+      limit: queryParams?.limit || 10,
+      totalPage: result.pagination.totalPages,
+      total: result.pagination.totalTransactions
+    }
   })
 })
 const getAllTransactions = catchAsync(async (req: Request, res: Response, next: NextFunction) => {

@@ -615,23 +615,46 @@ const adminWithdraw = async (data: {
         throw error;
     }
 };
-const getMyTransactions = async (userId: string) => {
-    const transactions = await Transaction.find({ 
+interface MyTransactionsQuery {
+    transactionType?: string;
+    page?: number;
+    limit?: number;
+    sortOrder?: 'asc' | 'desc';
+}
+
+const getMyTransactions = async (
+    userId: string,
+    query: MyTransactionsQuery = {}
+) => {
+    const {
+        transactionType,
+        page = 1,
+        limit = 10,
+        sortOrder = 'desc',
+    } = query;
+
+    const filter: any = {
         $or: [
             { sender: userId },
             { receiver: userId }
         ]
-    })
-    .populate("sender", "name email phone")
-    .populate("receiver", "name email phone")
-    .populate("walletId")
-    .sort({ createdAt: -1 }); // Sort by newest first
-
-    if (!transactions || transactions.length === 0) {
-        return []; // Return empty array instead of throwing error
+    };
+    if (transactionType) {
+        filter.transactionType = transactionType;
     }
 
-    return transactions.map(transaction => {
+    const skip = (page - 1) * limit;
+
+    const total = await Transaction.countDocuments(filter);
+    const transactions = await Transaction.find(filter)
+        .populate("sender", "name email phone")
+        .populate("receiver", "name email phone")
+        .populate("walletId")
+        .sort({ createdAt: sortOrder === 'asc' ? 1 : -1 })
+        .skip(skip)
+        .limit(limit);
+
+    const formatted = transactions.map(transaction => {
         const transactionObj = transaction.toObject();
         return {
             ...transactionObj,
@@ -649,6 +672,17 @@ const getMyTransactions = async (userId: string) => {
             } : null
         };
     });
+
+    return {
+        transactions: formatted,
+        pagination: {
+            currentPage: page,
+            totalPages: Math.ceil(total / limit),
+            totalTransactions: total,
+            hasNextPage: page < Math.ceil(total / limit),
+            hasPrevPage: page > 1
+        }
+    };
 };
 
 const getAllTransactions = async (queryParams: TransactionQueryParams = {}) => {

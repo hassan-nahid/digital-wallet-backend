@@ -199,6 +199,30 @@ const suspendAgent = async (userId: string) => {
   const { password: _, ...userWithoutPassword } = user.toObject();
   return userWithoutPassword;
 };
+const searchUserByEmail = async (email: any) => {
+    if (!email || typeof email !== 'string') {
+        return { user: null, error: "Email query parameter is required", statusCode: 400 };
+    }
+    const user = await User.findOne({ email, role: Role.USER }).select('-password -isAgentApproved -nid -isActive -createdAt -updatedAt');
+    if (!user) {
+    throw new AppError(httpStatus.BAD_REQUEST, "User not found or not a regular user");
+  }
+
+  return user;
+    
+};
+const searchAgentByEmail = async (email: any) => {
+    if (!email || typeof email !== 'string') {
+        return { user: null, error: "Email query parameter is required", statusCode: 400 };
+    }
+    const user = await User.findOne({ email, role: Role.AGENT }).select('-password -isAgentApproved -nid -isActive -createdAt -updatedAt');
+    if (!user) {
+    throw new AppError(httpStatus.BAD_REQUEST, "User not found or not a regular user");
+  }
+
+  return user;
+    
+};
 
 
 export const UserServices = {
@@ -209,4 +233,6 @@ export const UserServices = {
     updateUser,
     makeUserAgent,
     suspendAgent,
+    searchUserByEmail,
+    searchAgentByEmail
 };

@@ -95,6 +95,26 @@ const suspendAgent = catchAsync(async (req: Request, res: Response) => {
     data: result,
   });
 });
+const searchUserByEmail = catchAsync(async (req: Request, res: Response) => {
+  const { email } = req.params;
+  const result = await UserServices.searchUserByEmail(email);
+
+  res.status(httpStatus.OK).json({
+    success: true,
+    message: "User founded",
+    data: result,
+  });
+});
+const searchAgentByEmail = catchAsync(async (req: Request, res: Response) => {
+  const { email } = req.params;
+  const result = await UserServices.searchAgentByEmail(email);
+
+  res.status(httpStatus.OK).json({
+    success: true,
+    message: "Agent founded",
+    data: result,
+  });
+});
 
 export const UserController = {
     createUser,
@@ -103,5 +123,7 @@ export const UserController = {
     getSingleUser,
     updateUser,
     makeUserAgent,
-    suspendAgent
+    suspendAgent,
+    searchUserByEmail,
+    searchAgentByEmail
 }
