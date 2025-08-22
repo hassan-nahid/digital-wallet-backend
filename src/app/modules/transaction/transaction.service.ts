@@ -884,6 +884,24 @@ const getTransactionAnalytics = async () => {
     };
 };
 
+const getMyTransactionById = async (userId: string, transId: string) => {
+   
+    const transaction = await Transaction.findOne({
+        _id: transId,
+        $or: [
+            { sender: userId },
+            { receiver: userId }
+        ]
+    })
+    .populate("sender", "name email phone")
+    .populate("receiver", "name email phone")
+    .populate("walletId");
+    if (!transaction) {
+        throw new AppError(httpStatus.NOT_FOUND, "Transaction not found or access denied");
+    }
+    return transaction;
+};
+
 
 export const TransactionServices = {
     sendMoney,
@@ -893,5 +911,6 @@ export const TransactionServices = {
     adminWithdraw,
     getMyTransactions,
     getAllTransactions,
-    getTransactionAnalytics
+    getTransactionAnalytics,
+    getMyTransactionById
 }
