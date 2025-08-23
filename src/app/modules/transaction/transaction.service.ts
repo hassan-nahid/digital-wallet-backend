@@ -615,22 +615,24 @@ const adminWithdraw = async (data: {
         throw error;
     }
 };
-interface MyTransactionsQuery {
-    transactionType?: string;
-    page?: number;
-    limit?: number;
-    sortOrder?: 'asc' | 'desc';
-}
+
 
 const getMyTransactions = async (
     userId: string,
-    query: MyTransactionsQuery = {}
+    query: {
+        transactionType?: string;
+        startDate?: string;
+        endDate?: string;
+        page?: number;
+        limit?: number;
+    } = {}
 ) => {
     const {
         transactionType,
+        startDate,
+        endDate,
         page = 1,
         limit = 10,
-        sortOrder = 'desc',
     } = query;
 
     const filter: any = {
@@ -642,6 +644,11 @@ const getMyTransactions = async (
     if (transactionType) {
         filter.transactionType = transactionType;
     }
+    if (startDate || endDate) {
+        filter.createdAt = {};
+        if (startDate) filter.createdAt.$gte = new Date(startDate);
+        if (endDate) filter.createdAt.$lte = new Date(endDate);
+    }
 
     const skip = (page - 1) * limit;
 
@@ -650,7 +657,7 @@ const getMyTransactions = async (
         .populate("sender", "name email phone")
         .populate("receiver", "name email phone")
         .populate("walletId")
-        .sort({ createdAt: sortOrder === 'asc' ? 1 : -1 })
+        .sort({ createdAt: -1 }) // always newest first
         .skip(skip)
         .limit(limit);
 
