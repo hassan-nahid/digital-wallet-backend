@@ -19,12 +19,12 @@ const userSchema = new Schema<IUser>({
 });
 
 
-userSchema.pre("save", function (next) {
-    if (this.role === Role.AGENT) {
-        this.isAgentApproved = true;
-    }
-    next();
-});
+// userSchema.pre("save", function (next) {
+//     if (this.role === Role.AGENT) {
+//         this.isAgentApproved = true;
+//     }
+//     next();
+// });
 
 userSchema.post("save", async function (doc, next) {
     try {

@@ -32,66 +32,65 @@ export const AuthController = {
 };
 
 const getNewAccessToken = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
-    const refreshToken = req.cookies.refreshToken;
-    if (!refreshToken) {
-        throw new AppError(httpStatus.BAD_REQUEST, "No refresh token recieved from cookies")
-    }
-    const tokenInfo = await AuthServices.getNewAccessToken(refreshToken as string)
+  const refreshToken = req.cookies.refreshToken;
+  if (!refreshToken) {
+    throw new AppError(httpStatus.BAD_REQUEST, "No refresh token recieved from cookies")
+  }
+  const tokenInfo = await AuthServices.getNewAccessToken(refreshToken as string)
 
-    // res.cookie("accessToken", tokenInfo.accessToken, {
-    //     httpOnly: true,
-    //     secure: false
-    // })
+  // res.cookie("accessToken", tokenInfo.accessToken, {
+  //     httpOnly: true,
+  //     secure: false
+  // })
 
-    setAuthCookie(res, tokenInfo);
+  setAuthCookie(res, tokenInfo);
 
-    sendResponse(res, {
-        success: true,
-        statusCode: httpStatus.OK,
-        message: "New Access Token Retrived Successfully",
-        data: tokenInfo,
-    })
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: "New Access Token Retrived Successfully",
+    data: tokenInfo,
+  })
 })
 const logout = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
 
-    res.clearCookie("accessToken", {
-        httpOnly: true,
-        secure: false,
-        sameSite: "lax"
-    })
-    res.clearCookie("refreshToken", {
-        httpOnly: true,
-        secure: false,
-        sameSite: "lax"
-    })
+  res.clearCookie("accessToken", {
+    httpOnly: true,
+    secure: false,
+    sameSite: "lax"
+  })
+  res.clearCookie("refreshToken", {
+    httpOnly: true,
+    secure: false,
+    sameSite: "lax"
+  })
 
-    sendResponse(res, {
-        success: true,
-        statusCode: httpStatus.OK,
-        message: "User Logged Out Successfully",
-        data: null,
-    })
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: "User Logged Out Successfully",
+    data: null,
+  })
 })
 const changePassword = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
 
-    const newPassword = req.body.newPassword;
-    const oldPassword = req.body.oldPassword;
-    const decodedToken = req.user
+  const {oldPassword, newPassword} = req.body
+  const decodedToken = req.user
 
-    await AuthServices.changePassword(oldPassword, newPassword, decodedToken as JwtPayload);
+  await AuthServices.changePassword(oldPassword, newPassword, decodedToken as JwtPayload);
 
-    sendResponse(res, {
-        success: true,
-        statusCode: httpStatus.OK,
-        message: "Password Changed Successfully",
-        data: null,
-    })
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: "Password Changed Successfully",
+    data: null,
+  })
 })
 
 export const AuthControllers = {
-    credentialsLogin,
-    getNewAccessToken,
-    logout,
-    changePassword,
-    
+  credentialsLogin,
+  getNewAccessToken,
+  logout,
+  changePassword,
+
 }

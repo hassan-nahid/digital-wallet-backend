@@ -20,7 +20,7 @@ router.patch("/:id", validateRequest(updateUserSchema), checkAuth(...Object.valu
 router.patch(
   "/make-agent/:userId", checkAuth(Role.ADMIN), UserController.makeUserAgent);
 router.patch("/agent-suspense/:userId", checkAuth(Role.ADMIN), UserController.suspendAgent);
-router.get("/search-user/:email",checkAuth(Role.USER, Role.AGENT), UserController.searchUserByEmail);
+router.get("/search-user/:email",checkAuth(Role.USER, Role.AGENT,Role.ADMIN), UserController.searchUserByEmail);
 router.get("/search-agent/:email",checkAuth(Role.USER, Role.ADMIN), UserController.searchAgentByEmail);
 
 
