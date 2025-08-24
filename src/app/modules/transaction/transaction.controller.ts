@@ -97,6 +97,16 @@ const getMyTransactionById = catchAsync(async (req: Request, res: Response, next
     data: result,
   })
 })
+const getSingleTransactionById = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+  const {transId} = req.params;
+  const result = await TransactionServices.getSingleTransactionById( transId);
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: "Transactions Retrieved Successfully",
+    data: result,
+  })
+})
 const getMyTransactions = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
   const user = req.user as JwtPayload;
   const queryParams = req.query as any;
@@ -152,5 +162,6 @@ export const TransactionControllers = {
   getMyTransactions,
   getAllTransactions,
   getTransactionAnalytics,
-  getMyTransactionById
+  getMyTransactionById,
+  getSingleTransactionById
 }

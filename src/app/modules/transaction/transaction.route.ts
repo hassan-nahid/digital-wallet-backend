@@ -16,6 +16,7 @@ router.post("/cash-out", checkAuth(Role.USER,Role.AGENT),validateRequest(createT
 router.post("/admin-withdraw", checkAuth(Role.ADMIN), TransactionControllers.adminWithdraw)
 router.get("/my-transactions", checkAuth(...Object.values(Role)), TransactionControllers.getMyTransactions);
 router.get("/my-transactions/:transId", checkAuth(...Object.values(Role)), TransactionControllers.getMyTransactionById);
+router.get("/single-transactions/:transId", checkAuth(Role.ADMIN), TransactionControllers.getSingleTransactionById);
 router.get("/all-transactions", 
     checkAuth(Role.ADMIN),
     validateQuery(getTransactionsQuerySchema), 

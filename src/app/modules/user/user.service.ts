@@ -128,7 +128,7 @@ const updateUser = async (userId: string, payload: Partial<IUser>, decodedToken:
             throw new AppError(401, "You are not authorized to update others' profile");
         }
 
-        if (payload.role || payload.isActive) {
+        if (payload.role || payload.isActive || payload.isAgentApproved) {
             throw new AppError(httpStatus.FORBIDDEN, "You can't update role or isActive");
         }
     }
