@@ -14,7 +14,14 @@ const env_1 = require("./app/config/env");
 const app = (0, express_1.default)();
 app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({ extended: true }));
-app.use((0, cors_1.default)());
+app.use((0, cors_1.default)({
+    origin: "https://digital-wallet-frontend-one.vercel.app",
+    credentials: true,
+}));
+// app.use(cors({
+//   origin: "http://localhost:5173",
+//   credentials: true,
+// }));
 app.use((0, cookie_parser_1.default)());
 app.use((0, express_session_1.default)({
     secret: env_1.envVars.EXPRESS_SESSION_SECRET,

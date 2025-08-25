@@ -86,9 +86,48 @@ const makeUserAgent = (0, catchAsync_1.catchAsync)((req, res) => __awaiter(void 
 const suspendAgent = (0, catchAsync_1.catchAsync)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { userId } = req.params;
     const result = yield user_service_1.UserServices.suspendAgent(userId);
-    res.status(http_status_codes_1.default.OK).json({
+    (0, sendResponse_1.sendResponse)(res, {
+        statusCode: http_status_codes_1.default.OK,
         success: true,
         message: "Agent approval has been suspended",
+        data: result,
+    });
+}));
+const searchUserByEmail = (0, catchAsync_1.catchAsync)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { email } = req.params;
+    const result = yield user_service_1.UserServices.searchUserByEmail(email);
+    (0, sendResponse_1.sendResponse)(res, {
+        statusCode: http_status_codes_1.default.OK,
+        success: true,
+        message: "User Founded",
+        data: result,
+    });
+}));
+const searchAgentByEmail = (0, catchAsync_1.catchAsync)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { email } = req.params;
+    const result = yield user_service_1.UserServices.searchAgentByEmail(email);
+    (0, sendResponse_1.sendResponse)(res, {
+        statusCode: http_status_codes_1.default.OK,
+        success: true,
+        message: "Agent Founded",
+        data: result,
+    });
+}));
+const getAdmin = (0, catchAsync_1.catchAsync)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield user_service_1.UserServices.getAdmin();
+    (0, sendResponse_1.sendResponse)(res, {
+        statusCode: http_status_codes_1.default.OK,
+        success: true,
+        message: "Admin Founded",
+        data: result,
+    });
+}));
+const getUserAnalytics = (0, catchAsync_1.catchAsync)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield user_service_1.UserServices.getUserAnalytics();
+    (0, sendResponse_1.sendResponse)(res, {
+        statusCode: http_status_codes_1.default.OK,
+        success: true,
+        message: "Getting User Analytics Data",
         data: result,
     });
 }));
@@ -99,5 +138,9 @@ exports.UserController = {
     getSingleUser,
     updateUser,
     makeUserAgent,
-    suspendAgent
+    suspendAgent,
+    searchUserByEmail,
+    searchAgentByEmail,
+    getAdmin,
+    getUserAnalytics
 };

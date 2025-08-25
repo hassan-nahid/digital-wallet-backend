@@ -481,21 +481,34 @@ const adminWithdraw = (data) => __awaiter(void 0, void 0, void 0, function* () {
         throw error;
     }
 });
-const getMyTransactions = (userId) => __awaiter(void 0, void 0, void 0, function* () {
-    const transactions = yield transaction_model_1.Transaction.find({
+const getMyTransactions = (userId_1, ...args_1) => __awaiter(void 0, [userId_1, ...args_1], void 0, function* (userId, query = {}) {
+    const { transactionType, startDate, endDate, page = 1, limit = 10, } = query;
+    const filter = {
         $or: [
             { sender: userId },
             { receiver: userId }
         ]
-    })
+    };
+    if (transactionType) {
+        filter.transactionType = transactionType;
+    }
+    if (startDate || endDate) {
+        filter.createdAt = {};
+        if (startDate)
+            filter.createdAt.$gte = new Date(startDate);
+        if (endDate)
+            filter.createdAt.$lte = new Date(endDate);
+    }
+    const skip = (page - 1) * limit;
+    const total = yield transaction_model_1.Transaction.countDocuments(filter);
+    const transactions = yield transaction_model_1.Transaction.find(filter)
         .populate("sender", "name email phone")
         .populate("receiver", "name email phone")
         .populate("walletId")
-        .sort({ createdAt: -1 }); // Sort by newest first
-    if (!transactions || transactions.length === 0) {
-        return []; // Return empty array instead of throwing error
-    }
-    return transactions.map(transaction => {
+        .sort({ createdAt: -1 }) // always newest first
+        .skip(skip)
+        .limit(limit);
+    const formatted = transactions.map(transaction => {
         const transactionObj = transaction.toObject();
         return Object.assign(Object.assign({}, transactionObj), { sender: transactionObj.sender ? {
                 _id: transactionObj.sender._id,
@@ -509,6 +522,16 @@ const getMyTransactions = (userId) => __awaiter(void 0, void 0, void 0, function
                 phone: transactionObj.receiver.phone
             } : null });
     });
+    return {
+        transactions: formatted,
+        pagination: {
+            currentPage: page,
+            totalPages: Math.ceil(total / limit),
+            totalTransactions: total,
+            hasNextPage: page < Math.ceil(total / limit),
+            hasPrevPage: page > 1
+        }
+    };
 });
 const getAllTransactions = (...args_1) => __awaiter(void 0, [...args_1], void 0, function* (queryParams = {}) {
     const { search, transactionType, status, senderRole, receiverRole, minAmount, maxAmount, startDate, endDate, sortBy = 'createdAt', sortOrder = 'desc', page = 1, limit = 10 } = queryParams;
@@ -668,6 +691,46 @@ const getAllTransactions = (...args_1) => __awaiter(void 0, [...args_1], void 0,
         }
     };
 });
+const getTransactionAnalytics = () => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
+    const totalTransactions = yield transaction_model_1.Transaction.countDocuments();
+    const result = yield transaction_model_1.Transaction.aggregate([
+        { $group: { _id: null, totalVolume: { $sum: "$amount" } } }
+    ]);
+    const totalVolume = ((_a = result[0]) === null || _a === void 0 ? void 0 : _a.totalVolume) || 0;
+    return {
+        totalTransactions,
+        totalVolume
+    };
+});
+const getMyTransactionById = (userId, transId) => __awaiter(void 0, void 0, void 0, function* () {
+    const transaction = yield transaction_model_1.Transaction.findOne({
+        _id: transId,
+        $or: [
+            { sender: userId },
+            { receiver: userId }
+        ]
+    })
+        .populate("sender", "name email phone")
+        .populate("receiver", "name email phone")
+        .populate("walletId");
+    if (!transaction) {
+        throw new AppError_1.default(http_status_codes_1.default.NOT_FOUND, "Transaction not found or access denied");
+    }
+    return transaction;
+});
+const getSingleTransactionById = (transId) => __awaiter(void 0, void 0, void 0, function* () {
+    const transaction = yield transaction_model_1.Transaction.findOne({
+        _id: transId,
+    })
+        .populate("sender", "name email phone")
+        .populate("receiver", "name email phone")
+        .populate("walletId");
+    if (!transaction) {
+        throw new AppError_1.default(http_status_codes_1.default.NOT_FOUND, "Transaction not found or access denied");
+    }
+    return transaction;
+});
 exports.TransactionServices = {
     sendMoney,
     cashIn,
@@ -675,5 +738,8 @@ exports.TransactionServices = {
     addMoney,
     adminWithdraw,
     getMyTransactions,
-    getAllTransactions
+    getAllTransactions,
+    getTransactionAnalytics,
+    getMyTransactionById,
+    getSingleTransactionById
 };

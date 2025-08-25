@@ -170,9 +170,20 @@ const unblockWallet = (userId) => __awaiter(void 0, void 0, void 0, function* ()
     }
     return wallet;
 });
+const getWalletAnalytics = () => __awaiter(void 0, void 0, void 0, function* () {
+    const totalWallets = yield wallet_model_1.Wallet.countDocuments();
+    const totalBlocked = yield wallet_model_1.Wallet.countDocuments({ isBlocked: true });
+    const totalUnblocked = yield wallet_model_1.Wallet.countDocuments({ isBlocked: false });
+    return {
+        totalWallets,
+        totalBlocked,
+        totalUnblocked
+    };
+});
 exports.WalletServices = {
     getMyWallet,
     blockWallet,
     unblockWallet,
-    getAllWallets
+    getAllWallets,
+    getWalletAnalytics
 };

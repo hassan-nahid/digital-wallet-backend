@@ -64,9 +64,19 @@ const unblockWallet = (0, catchAsync_1.catchAsync)((req, res, next) => __awaiter
         data: wallet,
     });
 }));
+const getWalletAnalytics = (0, catchAsync_1.catchAsync)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const analytics = yield wallet_service_1.WalletServices.getWalletAnalytics();
+    (0, sendResponse_1.sendResponse)(res, {
+        success: true,
+        statusCode: http_status_codes_1.default.OK,
+        message: "Wallet analytics fetched successfully",
+        data: analytics
+    });
+}));
 exports.WalletControllers = {
     getMyWallet,
     blockWallet,
     unblockWallet,
-    getAllWallets
+    getAllWallets,
+    getWalletAnalytics
 };

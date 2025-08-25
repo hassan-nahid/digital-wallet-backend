@@ -9,11 +9,16 @@ const user_validation_1 = require("./user.validation");
 const user_interface_1 = require("./user.interface");
 const checkAuth_1 = require("../../middleware/checkAuth");
 const router = (0, express_1.Router)();
+// Analytics route for admin
+router.get("/analytics", (0, checkAuth_1.checkAuth)(user_interface_1.Role.ADMIN), user_controller_1.UserController.getUserAnalytics);
 router.post("/register", (0, validationRequest_1.validateRequest)(user_validation_1.createUserSchema), user_controller_1.UserController.createUser);
 router.get("/all-users", (0, checkAuth_1.checkAuth)(user_interface_1.Role.ADMIN), (0, validateQuery_1.validateQuery)(user_validation_1.getUsersQuerySchema), user_controller_1.UserController.getAllUsers);
 router.get("/me", (0, checkAuth_1.checkAuth)(...Object.values(user_interface_1.Role)), user_controller_1.UserController.getMe);
+router.get("/get-admin", (0, checkAuth_1.checkAuth)(user_interface_1.Role.AGENT, user_interface_1.Role.ADMIN), user_controller_1.UserController.getAdmin);
 router.get("/:id", (0, checkAuth_1.checkAuth)(user_interface_1.Role.ADMIN), user_controller_1.UserController.getSingleUser);
 router.patch("/:id", (0, validationRequest_1.validateRequest)(user_validation_1.updateUserSchema), (0, checkAuth_1.checkAuth)(...Object.values(user_interface_1.Role)), user_controller_1.UserController.updateUser);
 router.patch("/make-agent/:userId", (0, checkAuth_1.checkAuth)(user_interface_1.Role.ADMIN), user_controller_1.UserController.makeUserAgent);
 router.patch("/agent-suspense/:userId", (0, checkAuth_1.checkAuth)(user_interface_1.Role.ADMIN), user_controller_1.UserController.suspendAgent);
+router.get("/search-user/:email", (0, checkAuth_1.checkAuth)(user_interface_1.Role.USER, user_interface_1.Role.AGENT, user_interface_1.Role.ADMIN), user_controller_1.UserController.searchUserByEmail);
+router.get("/search-agent/:email", (0, checkAuth_1.checkAuth)(user_interface_1.Role.USER, user_interface_1.Role.ADMIN), user_controller_1.UserController.searchAgentByEmail);
 exports.UserRoutes = router;

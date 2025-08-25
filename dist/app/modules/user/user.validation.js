@@ -35,6 +35,8 @@ exports.createUserSchema = zod_1.default.object({
         message: "Password must contain at least 1 number.",
     }),
     address: zod_1.default.string().min(10).max(200),
+    role: zod_1.default
+        .enum(Object.values(user_interface_1.Role)),
     nid: zod_1.default.number().min(1000000000).max(999999999999),
 });
 exports.updateUserSchema = zod_1.default.object({

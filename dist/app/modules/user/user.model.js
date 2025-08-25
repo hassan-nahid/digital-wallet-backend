@@ -28,6 +28,12 @@ const userSchema = new mongoose_1.Schema({
     timestamps: true,
     versionKey: false
 });
+// userSchema.pre("save", function (next) {
+//     if (this.role === Role.AGENT) {
+//         this.isAgentApproved = true;
+//     }
+//     next();
+// });
 userSchema.post("save", function (doc, next) {
     return __awaiter(this, void 0, void 0, function* () {
         try {

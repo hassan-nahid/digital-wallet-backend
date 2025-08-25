@@ -30,7 +30,7 @@ const user_model_1 = require("./user.model");
 const http_status_codes_1 = __importDefault(require("http-status-codes"));
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const env_1 = require("../../config/env");
-// Create User (already done)
+// Create User
 const createUser = (payload) => __awaiter(void 0, void 0, void 0, function* () {
     const { email, password } = payload, rest = __rest(payload, ["email", "password"]);
     const isUserExist = yield user_model_1.User.findOne({ email });
@@ -39,11 +39,10 @@ const createUser = (payload) => __awaiter(void 0, void 0, void 0, function* () {
     }
     const hashedPassword = yield bcryptjs_1.default.hash(password, Number(env_1.envVars.BCRYPT_SALT_ROUND));
     const user = yield user_model_1.User.create(Object.assign({ email, password: hashedPassword }, rest));
-    // Return user without password using select
     const userWithoutPassword = yield user_model_1.User.findById(user._id).select('-password');
     return userWithoutPassword;
 });
-// Get All Users (admin only) with sorting, filtering, and searching
+// Get All Users 
 const getAllUsers = (query) => __awaiter(void 0, void 0, void 0, function* () {
     const { search, role, isActive, isAgentApproved, sortBy = 'createdAt', sortOrder = 'desc', page = 1, limit = 10 } = query;
     // Build filter object
@@ -120,7 +119,7 @@ const updateUser = (userId, payload, decodedToken) => __awaiter(void 0, void 0, 
         if (userId !== decodedToken.userId) {
             throw new AppError_1.default(401, "You are not authorized to update others' profile");
         }
-        if (payload.role || payload.isActive) {
+        if (payload.role || payload.isActive || payload.isAgentApproved) {
             throw new AppError_1.default(http_status_codes_1.default.FORBIDDEN, "You can't update role or isActive");
         }
     }
@@ -172,6 +171,45 @@ const suspendAgent = (userId) => __awaiter(void 0, void 0, void 0, function* () 
     const _a = user.toObject(), { password: _ } = _a, userWithoutPassword = __rest(_a, ["password"]);
     return userWithoutPassword;
 });
+const searchUserByEmail = (email) => __awaiter(void 0, void 0, void 0, function* () {
+    if (!email || typeof email !== 'string') {
+        return { user: null, error: "Email query parameter is required", statusCode: 400 };
+    }
+    const user = yield user_model_1.User.findOne({ email, role: user_interface_1.Role.USER }).select('-password -isAgentApproved -nid -isActive -createdAt -updatedAt');
+    if (!user) {
+        throw new AppError_1.default(http_status_codes_1.default.BAD_REQUEST, "User not found or not a regular user");
+    }
+    return user;
+});
+const searchAgentByEmail = (email) => __awaiter(void 0, void 0, void 0, function* () {
+    if (!email || typeof email !== 'string') {
+        return { user: null, error: "Email query parameter is required", statusCode: 400 };
+    }
+    const user = yield user_model_1.User.findOne({ email, role: user_interface_1.Role.AGENT }).select('-password -isAgentApproved -nid -isActive -createdAt -updatedAt');
+    if (!user) {
+        throw new AppError_1.default(http_status_codes_1.default.BAD_REQUEST, "User not found or not a regular user");
+    }
+    return user;
+});
+const getAdmin = () => __awaiter(void 0, void 0, void 0, function* () {
+    const user = yield user_model_1.User.find({ role: user_interface_1.Role.ADMIN }).select('-password -isAgentApproved -nid -isActive -createdAt -updatedAt -email');
+    if (!user || user.length === 0) {
+        throw new AppError_1.default(http_status_codes_1.default.BAD_REQUEST, "Admin Not Found");
+    }
+    return user;
+});
+const getUserAnalytics = () => __awaiter(void 0, void 0, void 0, function* () {
+    const total = yield user_model_1.User.countDocuments();
+    const admin = yield user_model_1.User.countDocuments({ role: user_interface_1.Role.ADMIN });
+    const agent = yield user_model_1.User.countDocuments({ role: user_interface_1.Role.AGENT });
+    const user = yield user_model_1.User.countDocuments({ role: user_interface_1.Role.USER });
+    return {
+        totalUsers: total,
+        totalAdmin: admin,
+        totalAgent: agent,
+        totalUser: user
+    };
+});
 exports.UserServices = {
     createUser,
     getAllUsers,
@@ -180,4 +218,8 @@ exports.UserServices = {
     updateUser,
     makeUserAgent,
     suspendAgent,
+    searchUserByEmail,
+    searchAgentByEmail,
+    getAdmin,
+    getUserAnalytics
 };

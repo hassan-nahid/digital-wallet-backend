@@ -90,14 +90,42 @@ const adminWithdraw = (0, catchAsync_1.catchAsync)((req, res, next) => __awaiter
         data: sendMoneyData
     });
 }));
-const getMyTransactions = (0, catchAsync_1.catchAsync)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+const getMyTransactionById = (0, catchAsync_1.catchAsync)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const user = req.user;
-    const sendMoneyData = yield transaction_service_1.TransactionServices.getMyTransactions(user.userId);
+    const { transId } = req.params;
+    const result = yield transaction_service_1.TransactionServices.getMyTransactionById(user.userId, transId);
     (0, sendResponse_1.sendResponse)(res, {
         success: true,
         statusCode: http_status_codes_1.default.OK,
         message: "Transactions Retrieved Successfully",
-        data: sendMoneyData
+        data: result,
+    });
+}));
+const getSingleTransactionById = (0, catchAsync_1.catchAsync)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const { transId } = req.params;
+    const result = yield transaction_service_1.TransactionServices.getSingleTransactionById(transId);
+    (0, sendResponse_1.sendResponse)(res, {
+        success: true,
+        statusCode: http_status_codes_1.default.OK,
+        message: "Transactions Retrieved Successfully",
+        data: result,
+    });
+}));
+const getMyTransactions = (0, catchAsync_1.catchAsync)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const user = req.user;
+    const queryParams = req.query;
+    const result = yield transaction_service_1.TransactionServices.getMyTransactions(user.userId, queryParams);
+    (0, sendResponse_1.sendResponse)(res, {
+        success: true,
+        statusCode: http_status_codes_1.default.OK,
+        message: "Transactions Retrieved Successfully",
+        data: result.transactions,
+        meta: {
+            page: result.pagination.currentPage,
+            limit: (queryParams === null || queryParams === void 0 ? void 0 : queryParams.limit) || 10,
+            totalPage: result.pagination.totalPages,
+            total: result.pagination.totalTransactions
+        }
     });
 }));
 const getAllTransactions = (0, catchAsync_1.catchAsync)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
@@ -116,6 +144,15 @@ const getAllTransactions = (0, catchAsync_1.catchAsync)((req, res, next) => __aw
         }
     });
 }));
+const getTransactionAnalytics = (0, catchAsync_1.catchAsync)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const analytics = yield transaction_service_1.TransactionServices.getTransactionAnalytics();
+    (0, sendResponse_1.sendResponse)(res, {
+        success: true,
+        statusCode: http_status_codes_1.default.OK,
+        message: "Transaction analytics fetched successfully",
+        data: analytics
+    });
+}));
 exports.TransactionControllers = {
     sendMoney,
     cashIn,
@@ -123,5 +160,8 @@ exports.TransactionControllers = {
     addMoney,
     adminWithdraw,
     getMyTransactions,
-    getAllTransactions
+    getAllTransactions,
+    getTransactionAnalytics,
+    getMyTransactionById,
+    getSingleTransactionById
 };
